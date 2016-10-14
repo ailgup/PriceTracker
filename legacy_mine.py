@@ -1,3 +1,11 @@
+"""
+
+WARNING 
+
+Code is broken as is, here as a refference
+
+"""
+
 
 import re
 import csv
@@ -8,37 +16,44 @@ import urllib.request
 import os
 import json
 
-def extract(start,end,string):
-	return ((string.split(start)[1]).split(end)[0]).strip()
 
-NO_OF_PAGES=105
-for i in range(1,NO_OF_PAGES):
-	request = requests.get("http://www.liquorandwineoutlets.com/products?page="+str(i)+"&type%5B0%5D=spirit")
-			
-	if request.status_code == 200:
-		soup = BeautifulSoup((request.text), 'html.parser')
-		
-		for s in soup.findAll("tr", {"class" : re.compile('product_row_*')}):
-			tds=s.findAll("td")
-			link=extract("<a href=\"","\"",str(tds[0]))
-			id=extract("\">","</a>",str(tds[0]))
-			name=extract("\">","</a>",str(tds[1]))
-			
-			vol=extract(">","<",str(tds[2]))
-			price=str(tds[3].text).strip()
-			sale_price=str(tds[4].text).strip()
-			sale_ends=str(tds[5].text).strip()
-			print (id," ",name," ",vol," ",price," ",sale_price," ",sale_ends)
-			#id=
+def googleImage(query):
+	#import urllib2
+	import json
+	#import cStringIO
 
-			
-			#print("Id: ",id," Name: ",name," Vol: ",vol)
+	#fetcher = urllib2.build_opener()
+	searchTerm = 'parrot'
+	startIndex = 0
+	searchUrl = "https://www.google.com/search?tbm=isch&q=" + searchTerm + "&start=" + str(startIndex)
+	f = requests.get(searchUrl)
+	print (f.text)
+	deserialized_output = json.loads(f.text)
+	print (deserialized_output)
+	imageUrl = deserialized_output['responseData']['results'][0]['unescapedUrl']
+	print (imageUrl)
+	return imageUrl
+	
+content=""
+rejects=""
+count=0
+nf=0
+with open("import.txt", encoding='utf8') as f:
+	content = f.readlines()
+	
+wine_index=len(content)	
+for line in content:
+	if "WINE" in str(line):
+		wine_index = content.index(line)
+		print (wine_index)
+		break
 """
 Should do this differently, should have a 
 first pass in which the table online is looked at and the id's are established
 
 n'th pass in which the prices are scraped and related
-		
+
+"""		
 content = content[:wine_index]
 with open('spirits.csv', 'w', newline='') as csvfile:
 	out = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
@@ -102,4 +117,3 @@ with open('spirits.csv', 'w', newline='') as csvfile:
 
 print (count,nf)
 
-"""

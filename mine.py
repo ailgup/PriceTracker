@@ -7,105 +7,122 @@ import time
 import urllib.request
 import os
 import json
+import datetime
+import sys
 
-
-def googleImage(query):
-	#import urllib2
-	import json
-	#import cStringIO
-
-	#fetcher = urllib2.build_opener()
-	searchTerm = 'parrot'
-	startIndex = 0
-	searchUrl = "https://www.google.com/search?tbm=isch&q=" + searchTerm + "&start=" + str(startIndex)
-	f = requests.get(searchUrl)
-	print (f.text)
-	deserialized_output = json.loads(f.text)
-	print (deserialized_output)
-	imageUrl = deserialized_output['responseData']['results'][0]['unescapedUrl']
-	print (imageUrl)
-	return imageUrl
-	
-content=""
-rejects=""
-count=0
-nf=0
-with open("import.txt", encoding='utf8') as f:
-	content = f.readlines()
-	
-wine_index=len(content)	
-for line in content:
-	if "WINE" in str(line):
-		wine_index = content.index(line)
-		print (wine_index)
-		break
 """
-Should do this differently, should have a 
-first pass in which the table online is looked at and the id's are established
+Extract function
 
-n'th pass in which the prices are scraped and related
+Returns text between the first instance of start
+and the first instance of end after start, exclusive.
 
-"""		
-content = content[:wine_index]
-with open('spirits.csv', 'w', newline='') as csvfile:
-	out = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-	out.writerow(["ID","Name","Volume","Proof","Type","Category","url","image","relative_1","relative_2","relative_3"])
-	for line in content:
-		x=re.findall("^\d+",line)
-		x+=re.findall("\d+\.\d\d(?!\d)(?!\L)",line)
-		if len(x)>1 and len(x)<4:
-			
-			request = requests.get("http://www.liquorandwineoutlets.com/products/detail/"+str(x[0]))
-			
+ex. extract("x","y","hello x this is x but also y y")
+	would return "this is also x but also y"
+"""
+def extract(start,end,string):
+	return str(((string.split(start)[1]).split(end)[0]).strip().encode('utf-8').decode('ascii'))
+def endFirstExtract(start,end,string):
+	first=string.split(end)[0]
+	return str((first.split(start)[len(first.split(start))-1]).strip().encode('utf-8').decode('ascii')).replace(end,"")
+
+def getNumPages(url):
+	request2 = requests.get(url)
+	if request2.status_code == 200:
+		soup = BeautifulSoup((request2.text), 'html.parser')
+		s=soup.findAll("div",{"class":"pagination"})[0]
+		for row in s.findAll("a"):
+			if row.text == "Last":
+				return(extract("page=","&",str(row)))
+	return 0	
+	
+"""
+Scrape Function
+
+Used to scrape website for both price data as well as
+product data. The function creates a .csv file with the
+data exported
+
+Parameters:
+ - mode (int)
+	determines how much detail we want by the scrape
+	1 = Price data only (~5 min)
+	2 = Price and Product data (~3 hrs)
+ - start (int) 
+	determines which page to begin the scrape on
+	1 = default
+"""
+def scrape(mode,start=1):
+	mode=int(mode)
+	if not((mode is 1) or (mode is 2)):
+		print (mode)
+		raise ValueError('Illegal mode value')
+	filename="spirits"+(datetime.datetime.now()).strftime("%m-%d-%y-%H_%M_%S")+".csv"
+	with open(filename, 'w', newline='') as csvfile:
+		out = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+		out.writerow(["Scraped", datetime.date.today()])
+		if mode is 2:
+			out.writerow(["ID","Name","Volume","Price","Sale Price","Sale Ends","Proof","Type","Category","url","image","relative_1","relative_2","relative_3"])
+		if mode is 1:
+			out.writerow(["ID","Name","Volume","Price","Sale Price","Sale Ends"])
+		index=0
+		numPages=int(getNumPages("http://www.liquorandwineoutlets.com/products?type[]=spirit"))
+		for i in range(int(start),numPages):
+			request = requests.get("http://www.liquorandwineoutlets.com/products?page="+str(i)+"&type%5B0%5D=spirit")
+					
 			if request.status_code == 200:
 				soup = BeautifulSoup((request.text), 'html.parser')
-				title = soup.h1.string
 				
-				reg_price = x[1]
-				if len(x) is 3:
-					sale_price = x[2]
-				else:
-					sale_price = reg_price
+				for s in soup.findAll("tr", {"class" : re.compile('product_row_*')}):
+					tds=s.findAll("td")
+					link=extract("<a href=\"","\"",str(tds[0]))
+					id=extract("\">","</a>",str(tds[0]))
+					name=extract("\">","</a>",str(tds[1])).replace("\"","") #removes quotes
 					
-				### Scrape Prices
-				# price = str(soup.find_all("p","big red")[0])
-				# if "Sale" in price:
-					# sale_price = re.findall("(\$\d+(\.\d+)?)",price)[0][0].strip("$")
-					# reg_price = re.findall("(\$\d+(\.\d+)?)",((str(soup.find_all('div','col col_1')[0]).split("\"strike\">")[1]).split("</")[0]).strip())[0][0].strip("$")
-					# sale_ends = re.findall("(\$\d+(\.\d+)?)",((str(soup.find_all('div','col col_1')[0]).split("Sale Ends:</strong>")[1]).split("<")[0]).strip())[0][0].strip()
-				# else:
-					# reg_price = re.findall("(\$\d+(\.\d+)?)",price)[0][0].strip("$")
-					# sale_price = reg_price
-					# sale_ends =""
-				### End Scrape Prices
-					
-				volume = ((str(soup.find_all('div','tk-chaparral-pro')[1]).split("</strong>")[1]).split("<br>")[0]).strip()
-				#print(volume)
-				proof = ((str(soup.find_all('div','tk-chaparral-pro')[1]).split("</strong>")[2]).split(u'\N{DEGREE SIGN}')[0]).strip()
-				type = str((request.text.split("Type:</strong>")[1]).split("<")[0])
-				category = str((request.text.split("Category:</strong>")[1]).split("<")[0])
-				relative_1 = ((str(soup.find_all('div','sep')[0]).split("detail/")[1]).split("/")[0]).strip()
-				relative_2 = ((str(soup.find_all('div','sep')[1]).split("detail/")[1]).split("/")[0]).strip()
-				relative_3 = ((str(soup.find_all('div','sep')[2]).split("detail/")[1]).split("/")[0]).strip()
-				url = "http://www.liquorandwineoutlets.com/products/detail/"+str(x[0])
-				image = str(((str(soup.find_all('img','product_details_image')[0]).split("src=\"")[1]).split("\"")[0]).strip())
-				if "spirit_silo" in image:
-					print ("Need to Google Image")
-					image = False
-				else:
-					if not (os.path.isfile("images\\"+x[0]+".jpg")):
-						urllib.request.urlretrieve(image,"images\\"+x[0]+".jpg")
-					image =True
-				print ("\nID: ",str(x[0]),"\nTitle: ",title,"\nReg Price: ", reg_price, "\nSale Price: ", sale_price, "\nVol: ",volume,"\nProof: ",proof,"\nType",type,"\nCategory",category,"\nRelatives: ",[relative_1,relative_2,relative_3],"\nURL: ",url,"\nImage: ", image)
-				
-				
-				count+=1
+					vol=extract(">","<",str(tds[2]))
+					price=str(tds[3].text).strip().replace(",","") #removes commas on prices >999
+					sale_price=str(tds[4].text).strip()
+					sale_ends=str(tds[5].text).strip()
+					#Now looking into the individual item
+					#print (link)
+					if mode is 2:
+						request2 = requests.get("http://www.liquorandwineoutlets.com"+link)
+						if request2.status_code == 200:
+							soup = BeautifulSoup((request2.text), 'html.parser')
+							proof = ((str(soup.find_all('div','tk-chaparral-pro')[1]).split("</strong>")[2]).split(u'\N{DEGREE SIGN}')[0]).strip()
+							type = extract("Type:</strong>","<",str(soup.findAll("div",{"class":"tk-chaparral-pro"})[1]))
+							#print(type)
+							category = extract("Category:</strong>","<",str(soup.findAll("div",{"class":"tk-chaparral-pro"})[1]))
+							try:
+								relative_1 = extract("detail/","/",str(soup.findAll("div",{"class":"sep"})[0]))
+							except:
+								relative_1="-"
+							try:
+								relative_2 = extract("detail/","/",str(soup.findAll("div",{"class":"sep"})[1]))
+							except:
+								relative_2="-"
+							try:
+								relative_3 = extract("detail/","/",str(soup.findAll("div",{"class":"sep"})[2]))
+							except:
+								relative_2="-"
+							image = str(((str(soup.find_all('img','product_details_image')[0]).split("src=\"")[1]).split("\"")[0]).strip()).replace("http://","")
+							if "spirit_silo" in image:
+								#print ("Need to Google Image")
+								image = False
+							else:
+								if not (os.path.isfile("images\\"+id+".jpg")):
+									urllib.request.urlretrieve(("http://"+urllib.parse.quote(image)),"images\\"+id+".jpg")
+								image =True
+						print (index," ",id," ",name," ",vol," ",price," ",sale_price," ",sale_ends," ",proof," ",type," ",category," ",link," ",image," ",relative_1," ",relative_2," ",relative_3)
+						out.writerow([index,id,name,vol,price,sale_price,sale_ends,proof,type,category,link,image,relative_1,relative_2,relative_3])
+					else:
+						print (index," ",id," ",name," ",vol," ",price," ",sale_price," ",sale_ends)
+						out.writerow([index,id,name,vol,price,sale_price,sale_ends])
+					csvfile.flush()
+					time.sleep(5)
+					index+=1
+					#id=
 			else:
-				nf+=1
-			time.sleep(5)
-		else:
-			rejects+=line
-
-
-print (count,nf)
-
+				raise("Error probably overwhelming server")
+			time.sleep(5) #slows things down so we don't overwhelm the server
+				
+scrape(sys.argv[1])
