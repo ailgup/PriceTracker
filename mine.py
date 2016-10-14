@@ -76,9 +76,9 @@ def scrape(mode,start=1):
 					tds=s.findAll("td")
 					link=extract("<a href=\"","\"",str(tds[0]))
 					id=extract("\">","</a>",str(tds[0]))
-					name=extract("\">","</a>",str(tds[1])).replace("\"","") #removes quotes
+					name="\""+extract("\">","</a>",str(tds[1])).replace("\"","")+"\"" #removes quotes
 					
-					vol=extract(">","<",str(tds[2]))
+					vol="\""+extract(">","<",str(tds[2]))+"\""
 					price=str(tds[3].text).strip().replace(",","") #removes commas on prices >999
 					sale_price=str(tds[4].text).strip()
 					sale_ends=str(tds[5].text).strip()
