@@ -58,11 +58,13 @@ def scrape(mode,start=1):
 		raise ValueError('Illegal mode value')
 	filename="spirits"+(datetime.datetime.now()).strftime("%m-%d-%y-%H_%M_%S")+".csv"
 	with open(filename, 'w', newline='') as csvfile:
-		out = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-		out.writerow(["Scraped", datetime.date.today()])
+		out = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+		
 		if mode is 2:
+			out.writerow(["Scraped", datetime.date.today(),"","","","","","","","","","","",""])
 			out.writerow(["ID","Name","Volume","Price","Sale Price","Sale Ends","Proof","Type","Category","url","image","relative_1","relative_2","relative_3"])
 		if mode is 1:
+			out.writerow(["Scraped", datetime.date.today(),"","","",""])
 			out.writerow(["ID","Name","Volume","Price","Sale Price","Sale Ends"])
 		index=0
 		numPages=int(getNumPages("http://www.liquorandwineoutlets.com/products?type[]=spirit"))
@@ -76,7 +78,7 @@ def scrape(mode,start=1):
 					tds=s.findAll("td")
 					link=extract("<a href=\"","\"",str(tds[0]))
 					id=extract("\">","</a>",str(tds[0]))
-					name="\""+extract("\">","</a>",str(tds[1])).replace("\"","")+"\"" #removes quotes
+					name="\""+extract("\">","</a>",str(tds[1])).replace("&amp;","&")+"\"" #removes quotes
 					
 					vol="\""+extract(">","<",str(tds[2]))+"\""
 					price=str(tds[3].text).strip().replace(",","") #removes commas on prices >999
@@ -89,9 +91,8 @@ def scrape(mode,start=1):
 						if request2.status_code == 200:
 							soup = BeautifulSoup((request2.text), 'html.parser')
 							proof = ((str(soup.find_all('div','tk-chaparral-pro')[1]).split("</strong>")[2]).split(u'\N{DEGREE SIGN}')[0]).strip()
-							type = extract("Type:</strong>","<",str(soup.findAll("div",{"class":"tk-chaparral-pro"})[1]))
-							#print(type)
-							category = extract("Category:</strong>","<",str(soup.findAll("div",{"class":"tk-chaparral-pro"})[1]))
+							type = extract("Type:</strong>","<",str(soup.findAll("div",{"class":"tk-chaparral-pro"})[1])).replace("&amp;","&")
+							category = extract("Category:</strong>","<",str(soup.findAll("div",{"class":"tk-chaparral-pro"})[1])).replace("&amp;","&")
 							try:
 								relative_1 = extract("detail/","/",str(soup.findAll("div",{"class":"sep"})[0]))
 							except:
