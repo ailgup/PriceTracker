@@ -1,0 +1,19 @@
+Sub RoundedRectangle2_Click()
+Dim i As Variant
+Dim LastRow As Variant
+LastRow = ActiveSheet.UsedRange.Rows.Count
+
+i = 2
+
+Do While i <= LastRow
+
+If Not IsNumeric(Sheet1.Cells(i, 1)) Or Sheet1.Cells(i, 1) = vbNullString Then
+   Sheet1.Cells(i, 1).EntireRow.Delete
+   LastRow = LastRow - 1
+   Else
+   i = i + 1
+End If
+
+Loop
+
+End Sub
