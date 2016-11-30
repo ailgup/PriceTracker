@@ -1,0 +1,94 @@
+CREATE DEFINER=`chrispug_pricetr`@`73.47.107.32` FUNCTION `actualVol`(volume varchar(255)) RETURNS float
+BEGIN
+
+  IF volume = 'Liter' THEN RETURN 1000;
+  ELSEIF volume REGEXP '.+Oz' THEN RETURN CAST(CAST(TRIM(trailing 'Oz' from volume) as unsigned)*29.57 as unsigned);
+  ELSEIF volume REGEXP '^[0123456789]+mL+.+Pk' THEN RETURN CAST(TRIM(trailing 'mL' from volume) as unsigned)*
+						CAST(TRIM(trailing 'Pk' from(SUBSTRING_INDEX(volume,'mL',-1))) as unsigned);
+  ELSEIF volume REGEXP '^[0123456789\\.]+L'THEN RETURN CAST(TRIM(trailing 'L' from volume) as decimal(10,2))*1000;
+  ELSEIF volume REGEXP '^[0123456789]+mL$'THEN RETURN CAST(TRIM(trailing 'mL' from volume) as unsigned);
+
+  ELSEIF volume REGEXP '^[0123456789]+mL \\+'THEN RETURN
+					  CAST(TRIM(trailing 'mL' from volume) as unsigned)+
+					  (50*CAST(TRIM(trailing '/' from(SUBSTRING_INDEX(volume,'+',-1))) as unsigned));
+  ELSEIF volume REGEXP '^[0123456789]+/+[0123456789]+mL' THEN RETURN
+						CAST(SUBSTRING_INDEX(volume,'/',1) as unsigned)*
+                        CAST(SUBSTRING_INDEX(TRIM(trailing 'mL' from volume),'/',-1) as unsigned);
+  ELSE RETURN CAST( volume as unsigned);
+  END IF;
+END
+
+
+CREATE DEFINER=`chrispug_pricetr`@`73.47.107.32` FUNCTION `pricePerLiter`( normal decimal (10,2),sale decimal(10,2), volume varchar(255)) RETURNS decimal(10,3)
+BEGIN
+    if normal is NULL then
+		RETURN sale/CAST( volume as decimal);
+	elseif sale is NULL then
+		return normal/CAST( volume as decimal);
+	elseif sale<normal then
+		return sale/CAST( volume as decimal);
+	elseif sale>normal then
+		return normal/CAST( volume as decimal);
+    else 
+		return -1.0;
+	end if;
+END
+
+CREATE DEFINER=`chrispug_pricetr`@`73.47.107.32` FUNCTION `getName`(input_id int) RETURNS varchar(255) CHARSET utf8
+BEGIN
+Declare n varchar(255);
+if input_id is NULL then
+return NULL;
+end if;
+select `name` into @n from Items where id=input_id LIMIT 1;
+RETURN @n;
+END
+
+UPDATE  `Prices` INNER JOIN Items ON Items.id = Prices.id SET  `price_per_liter` = pricePerLiter(
+Prices.sale_price,
+Prices.price,
+Items.volume
+),`price_per_abv`=pricePerABV(Items.proof,Prices.sale_price,Prices.price,Items.volume) ,
+`the_min`= CASE WHEN  Prices.sale_price <  Prices.price
+           THEN  Prices.sale_price 
+           ELSE  Prices.price
+			END
+WHERE Prices.id =1
+
+-- to set min
+
+SELECT mt1.*,mt2.*,
+        (mt1.the_min - mt2.the_min
+        ) / mt1.the_min *100
+        AS real_perc_diff
+        FROM Prices mt1
+        LEFT JOIN Prices mt2 ON mt2.scrape_date = ( 
+        SELECT MAX( mt3.scrape_date ) 
+        FROM Prices mt3
+        WHERE mt3.id = mt1.id
+        AND mt1.price_id != mt3.price_id
+        AND mt3.scrape_date < mt1.scrape_date ) 
+        WHERE mt2.id = mt1.id and mt1.id<1000
+
+-- update prices
+
+update Prices as p1,(
+SELECT 
+        mt1.price_id as q,( mt1.the_min - mt2.the_min
+        ) / mt1.the_min *100
+        AS real_perc_diff
+        FROM Prices mt1
+        LEFT JOIN Prices mt2 ON mt2.scrape_date = ( 
+        SELECT MAX( mt3.scrape_date ) 
+        FROM Prices mt3
+        WHERE mt3.id = mt1.id
+        
+        AND mt1.price_id != mt3.price_id
+        AND mt3.scrape_date < mt1.scrape_date ) 
+        WHERE mt2.id = mt1.id ) as p2
+ set p1.perc_diff = p2.real_perc_diff
+where p2.q = p1.price_id
+
+-- update avg_dif_perc
+
+UPDATE `Prices` SET avg_dif_perc=(Prices.the_min-avgPrice(Prices.id))/Prices.the_min*100 

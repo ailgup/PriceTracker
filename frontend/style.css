@@ -1,0 +1,140 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 1, 2016, 10:01:34 AM
+    Author     : Chris
+*/
+/* Search */
+#imaginary_container{
+    margin-top:20%; /* Don't copy this */
+}
+.stylish-input-group .input-group-addon{
+    background: white !important; 
+}
+.stylish-input-group .form-control{
+	border-right:0; 
+	box-shadow:0 0 0; 
+	border-color:#ccc;
+}
+.stylish-input-group button{
+    border:0;
+    background:transparent;
+}
+/* End search */
+    /* Remove the navbar's default rounded borders and increase the bottom margin */
+.row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+.navbar {
+  margin-bottom: 30px;
+  border-radius: 0;
+}
+
+
+
+.panel > .panel-heading {
+  background-image: none;
+  background-color: maroon;
+  color: white;
+  font: normal normal normal 14px/19px Georgia, 'Palatino', 'Palatino Linotype', Times, 'Times New Roman', serif;
+}
+
+.panel {
+  border-color: maroon;
+}
+
+
+/* Remove the jumbotron's default bottom margin */
+.jumbotron {
+  margin-bottom: 0;
+  /*background: url("http://www.co.worcester.md.us/sites/default/files/styles/slideshow/public/liquor.png") no-repeat center fixed;
+  background-size: contain;*/
+}
+
+/* Add a gray background color and some padding to the footer */
+footer {
+  background-color: #f2f2f2;
+  padding: 25px;
+}
+.sale{
+  background-color: maroon;
+}
+
+
+.full-width {
+    display:block;
+}
+h4{
+  /* font-size: 2.5vmin;
+  line-height: 1.5vmin;*/
+}
+.label-sale{
+  background-color:green;
+}
+.label-nosale{
+  background-color:grey;
+}
+.col-xs-5ths,
+.col-sm-5ths,
+.col-md-5ths,
+.col-lg-5ths {
+    position: relative;
+    min-height: 1px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+@media (min-width: 768px) {
+.col-sm-5ths {
+        width: 20%;
+        float: left;
+    }
+}
+@media (min-width: 992px) {
+    .col-md-5ths {
+        width: 20%;
+        float: left;
+    }
+}
+@media (min-width: 1200px) {
+    .col-lg-5ths {
+        width: 20%;
+        float: left;
+    }
+}
+
+.col-xs-5ths {
+    width: 20%;
+    float: left;
+}
+/*.popover
+{
+    //min-width: 600px ! important;
+}*/
+.popover{
+    display:block !important;
+    max-width: 600px!important;
+    width:auto;
+    
+}
+
+.label.measurments
+{
+display: block;
+text-align: center;
+white-space: normal;
+padding: 5px;
+line-height: 1.3;
+}
+iframe {
+ background-image: url("login/images/load2.gif");   
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: auto 100%;
+}

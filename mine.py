@@ -61,11 +61,9 @@ def scrape(mode,start=1):
 		out = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 		
 		if mode is 2:
-			out.writerow(["Scraped", datetime.date.today(),"","","","","","","","","","","",""])
-			out.writerow(["ID","Name","Volume","Price","Sale Price","Sale Ends","Proof","Type","Category","url","image","relative_1","relative_2","relative_3"])
+			out.writerow(["Count","ID","Name","Volume","Price","Scrape Date","Sale Price","Sale Ends","Proof","Type","Category","url","image","relative_1","relative_2","relative_3"])
 		if mode is 1:
-			out.writerow(["Scraped", datetime.date.today(),"","","",""])
-			out.writerow(["ID","Name","Volume","Price","Sale Price","Sale Ends"])
+			out.writerow(["Count","ID","Name","Volume","Price","Scrape Date","Sale Price","Sale Ends"])
 		index=0
 		numPages=int(getNumPages("http://www.liquorandwineoutlets.com/products?type[]=spirit"))
 		for i in range(int(start),numPages):
@@ -78,12 +76,18 @@ def scrape(mode,start=1):
 					tds=s.findAll("td")
 					link=extract("<a href=\"","\"",str(tds[0]))
 					id=extract("\">","</a>",str(tds[0]))
-					name="\""+extract("\">","</a>",str(tds[1])).replace("&amp;","&")+"\"" #removes quotes
+					name=extract("\">","</a>",str(tds[1])).replace("&amp;","&") #removes quotes
 					
-					vol="\""+extract(">","<",str(tds[2]))+"\""
-					price=str(tds[3].text).strip().replace(",","") #removes commas on prices >999
-					sale_price=str(tds[4].text).strip()
+					vol=extract(">","<",str(tds[2]))
+					price=str(tds[3].text).strip().replace(",","").replace("$","") #removes commas on prices >999
+					sale_price=(str(tds[4].text).replace("*","")).strip().replace(",","").replace("$","")
+					if "-" in sale_price:
+						sale_price="NULL"
 					sale_ends=str(tds[5].text).strip()
+					if "-" in sale_ends:
+						sale_ends="NULL"
+					else:
+						sale_ends=time.strftime("%y-%m-%d",time.strptime(sale_ends,'%m/%d/%y'))
 					#Now looking into the individual item
 					#print (link)
 					if mode is 2:
@@ -114,12 +118,15 @@ def scrape(mode,start=1):
 									urllib.request.urlretrieve(("http://"+urllib.parse.quote(image)),"images\\"+id+".jpg")
 								image =True
 						print (index," ",id," ",name," ",vol," ",price," ",sale_price," ",sale_ends," ",proof," ",type," ",category," ",link," ",image," ",relative_1," ",relative_2," ",relative_3)
-						out.writerow([index,id,name,vol,price,sale_price,sale_ends,proof,type,category,link,image,relative_1,relative_2,relative_3])
+						today=(datetime.datetime.now()).strftime("%y-%m-%d")
+						out.writerow([index,id,name,vol,price,today,sale_price,sale_ends,proof,type,category,link,image,relative_1,relative_2,relative_3])
+						time.sleep(5)
 					else:
+						today=(datetime.datetime.now()).strftime("%y-%m-%d")
 						print (index," ",id," ",name," ",vol," ",price," ",sale_price," ",sale_ends)
-						out.writerow([index,id,name,vol,price,sale_price,sale_ends])
+						out.writerow([index,id,name,vol,price,today,sale_price,sale_ends])
 					csvfile.flush()
-					time.sleep(5)
+					
 					index+=1
 					#id=
 			else:
