@@ -1,0 +1,43 @@
+<div class="container searchable products-grid">
+    <div class="row">
+    <!--<div class="input-group col-md-3">
+     <span class="input-group-addon" id="basic-addon1">Filter</span>
+    <input id="filter" type="text" class="form-control" placeholder="Type here..."> 
+    </div>--> 
+    <div class="dropdown col-md-3">
+        <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"> <?php echo $sort_string ?>
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a href="sort=id" class="sort_item">ID</a></li>
+            <li><a href="sort=pd" class="sort_item">Price ▼</a></li>
+          <li><a href="sort=pu" class="sort_item">Price ▲</a></li>
+          <li><a href="sort=n" class="sort_item">Name</a></li>
+          <li><a href="sort=ppva" class="sort_item">Unit Price ▲</a></li>
+          <li><a href="sort=ppvd" class="sort_item">Unit Price ▼</a></li>
+          <li><a href="sort=ppvabva" class="sort_item">$ Per (ABV) ▲</a></li>
+          <li><a href="sort=ppvabvd" class="sort_item">$ Per (ABV) ▼</a></li>
+          <li><a href="sort=pdiffa" class="sort_item">% Change ▲</a></li>
+          <li><a href="sort=pdiffd" class="sort_item">% Change ▼</a></li>
+        </ul>
+    </div>
+        <div class="col-md-3"><!--<button class="btn" data-toggle="collapse" data-target="#demo">Advanced Search</button>--></div>
+        <div class="col-md-3"></div>
+        <div class="col-md-3">
+        
+                <div class="input-group stylish-input-group">
+                    <input onkeydown = "if (event.keyCode == 13)
+                        document.getElementById('search').click()" id="search_box" type="text" class="form-control"  placeholder="<?php echo $search_term; ?>" >
+                    <span class="input-group-addon">
+                        <button onclick="search()" id="search" type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>  
+                    </span>
+      
+        </div>
+           
+        <div id="demo" class="collapse">
+        <div class="total" data-column="4"></div>Insert More Filter Options Here
+        </div>
+    </div>
+    </div>
+    <br>
