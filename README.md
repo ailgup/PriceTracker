@@ -34,7 +34,7 @@ echo  "<?php header( 'Location: grid.php' ) ;?> " >> index.php
 
 ####Grid
 <table>
-<tr><td>
+<tr><td width="200">
 <img src="https://github.com/ailgup/PriceTracker/blob/master/readme/grid.png?raw=true" width="200"></td><td>
 Main page of the site, features items visually with images, allows for search, and ordering based on many criteria.
 Is not exhaustive in filtering as the table does a much better job in this area. Provides basic info about the product and offers an option to mouseover to preview the graph. Clicking on an item will take you to it's page. Features pagination with a default of 60 products per page.</td></tr></table>
