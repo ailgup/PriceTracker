@@ -1,6 +1,6 @@
 # PriceTracker 
-###![screenshot](https://github.com/ailgup/PriceTracker/blob/master/readme/shot.png?raw=true) [Live Demo ](http://chrispuglia.com/pt)
-:arrow_upper_right:
+###![screenshot](https://github.com/ailgup/PriceTracker/blob/master/readme/shot.png?raw=true) [Live Demo :arrow_upper_right:](http://chrispuglia.com/pt)
+
 
 
 Product price tracker, built as a framework, but implemented to track historical prices from [LiquorandWineOutlets.com](http://LiquorandWineOutlets.com). Frontend is a PHP based web-app, and data is stored in a MySQL database. Legacy data was scraped from PDF's using python, and current pricing data scraped from the web using PHP.
@@ -35,7 +35,7 @@ echo  "<?php header( 'Location: grid.php' ) ;?> " >> index.php
 ####Grid
 <table>
 <tr><td>
-[<img src="https://github.com/ailgup/PriceTracker/blob/master/readme/grid.png?raw=true" width="200">](https://github.com/ailgup/PriceTracker/blob/master/readme/grid.png?raw=true)</td><td>
+<img src="https://github.com/ailgup/PriceTracker/blob/master/readme/grid.png?raw=true" width="200"></td><td>
 Main page of the site, features items visually with images, allows for search, and ordering based on many criteria.
 Is not exhaustive in filtering as the table does a much better job in this area. Provides basic info about the product and offers an option to mouseover to preview the graph. Clicking on an item will take you to it's page. Features pagination with a default of 60 products per page.</td></tr></table>
 
