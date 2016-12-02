@@ -1,5 +1,5 @@
 # PriceTracker 
-[Live Demo](http://chrispuglia.com/pt) - [Feature Video :tv:](https://www.youtube.com/watch?v=Qm6j2n7zL1s)
+## [Live Demo](http://chrispuglia.com/pt) - [Feature Video :tv:](https://www.youtube.com/watch?v=Qm6j2n7zL1s)
 
 <table><tr>
 <td width="200">
@@ -8,10 +8,10 @@
 Product price tracker, built as a framework, but implemented to track historical prices from <a href="http://LiquorandWineOutlets.com">LiquorandWineOutlets.com</a>. Frontend is a PHP based web-app, and data is stored in a MySQL database. Legacy data was scraped from PDF's using python, and current pricing data scraped from the web using PHP.
 </td></table>
 
-## Frontend
+##Frontend
 PHP based frontend currently hosted [HERE](http://chrispuglia.com/pt)
 
-### To Deploy
+###To Deploy
 On a LAMP server running PHP 5.5+ run 
 ```
 git clone https://github.com/ailgup/PriceTracker.git
