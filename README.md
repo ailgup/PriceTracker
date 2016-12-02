@@ -1,9 +1,12 @@
 # PriceTracker 
-###![screenshot](https://github.com/ailgup/PriceTracker/blob/master/readme/shot.png?raw=true) ([Live Demo :arrow_upper_right:](http://chrispuglia.com/pt))       ([Feature Video :tv:](https://www.youtube.com/watch?v=Qm6j2n7zL1s))
+ ([Live Demo :arrow_upper_right:](http://chrispuglia.com/pt))       ([Feature Video :tv:](https://www.youtube.com/watch?v=Qm6j2n7zL1s))
 
-
-
+<table><tr><td>
+<td width="200">
+<img src="https://github.com/ailgup/PriceTracker/blob/master/readme/grid.png?raw=true" width="200">
+</td><td>
 Product price tracker, built as a framework, but implemented to track historical prices from [LiquorandWineOutlets.com](http://LiquorandWineOutlets.com). Frontend is a PHP based web-app, and data is stored in a MySQL database. Legacy data was scraped from PDF's using python, and current pricing data scraped from the web using PHP.
+</td></table>
 ## Frontend
 PHP based frontend currently hosted [HERE](http://chrispuglia.com/pt)
 
