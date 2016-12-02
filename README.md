@@ -1,7 +1,7 @@
 # PriceTracker 
- ([Live Demo :arrow_upper_right:](http://chrispuglia.com/pt))       ([Feature Video :tv:](https://www.youtube.com/watch?v=Qm6j2n7zL1s))
+## [Live Demo](http://chrispuglia.com/pt) - [Feature Video :tv:](https://www.youtube.com/watch?v=Qm6j2n7zL1s)
 
-<table><tr><td>
+<table><tr>
 <td width="200">
 <img src="https://github.com/ailgup/PriceTracker/blob/master/readme/grid.png?raw=true" width="200">
 </td><td>
