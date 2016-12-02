@@ -105,7 +105,7 @@ If the user is logged in as an admin they will see the admin button on their use
 	* ```pricePerABV``` - given an Item id return the price per liter of pure alcohol eg.((current price)/(item volume))*(200/proof)
 	* ```pricePercDiff``` - given an Item id return the percent difference from the previous price to the current price eg. (current-past)/current*100
 	* ```pricePerLiter``` - given an Item id return the unit price in $/L of a given item
-7. Error Handling```
+7. Error Handling
   * As this is a web app errors need to be considered, therefore all database connections contain catch's if the database is unavailable
   * Also on the forefront of concern was the possibility of a SQL injection attack, therefore all inputs were scrubbed before being entered into the queries. Particularly dangerous queries such as deletes and creates are only available behind the secure admin page, therefore restricting access to these sensitive commands.
   * The ```products.php``` page has error checking built in as does ```graph.php``` if the product id is not valid it will tell the user "Product not found"
@@ -116,7 +116,9 @@ If the user is logged in as an admin they will see the admin button on their use
   * Users tracking of products, allowing users to have a home store and track products they are interested in is an advanced feature allowing for greater interaction between the database and the user.
   * The concept of having Prices without Items and Items that ave become deprecated is an advanced feature that was added to allow for representation of the complexity and the "real" nature of the domain. It was recognized that items will come in and out of stock and prices should still be trackable even if an Items is currently unavailable.
   * The Image scraping algorithm used in both python and through the admin panel is an advanced feature used to obtain efficiently and accurately product images.
+
 ## Backend
+
 ### To Deploy
 On a MySQL server run ```SQL\pricetracker.sql```
 
