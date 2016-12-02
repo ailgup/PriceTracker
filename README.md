@@ -1,5 +1,5 @@
 # PriceTracker 
-###![screenshot](https://github.com/ailgup/PriceTracker/blob/master/readme/shot.png?raw=true) [(Live Demo :arrow_upper_right:)](http://chrispuglia.com/pt)       [(Feature Video :tv:)](https://www.youtube.com/watch?v=Qm6j2n7zL1s)
+###![screenshot](https://github.com/ailgup/PriceTracker/blob/master/readme/shot.png?raw=true) ([Live Demo :arrow_upper_right:](http://chrispuglia.com/pt))       ([Feature Video :tv:](https://www.youtube.com/watch?v=Qm6j2n7zL1s))
 
 
 
