@@ -4,7 +4,9 @@ import re
 import urllib.request
 import os
 import json
-
+import sys
+import pymysql
+import pymysql.cursors
 class Image:
 	def isInt(self,s):
 		try: 
@@ -15,24 +17,19 @@ class Image:
 			
 	def findImageless(self):
 		import csv
-		csvv='spirits10-16-16-23_06_50.csv'
-		with open(csvv, 'rt') as f:
-			reader = csv.reader(f)
-			listy = list(reader)
-			listy=listy[843:] #sets the start index
-			for row in listy:
-				if(row[11]=="True"):
-					print(row[0]," ",row[1]," has image")
-				elif(row[11]=="False"):
-					#print([row[0]," has no image")
-					self.search(row[2]+" "+row[3],row[1])
-				else:
-					if(self.isInt(row[1])):
-						print("Row Error !!!")
-						raise
-					else:
-						print("Skipping, Probably header")
-			print("Completed")
+
+		host = "69.65.0.221" #input('Enter host: ')
+		db= "chrispug_pricetracker"#input('Enter db')
+		user = "chrispug_pricetr"#input('Enter user: ')
+		pw = "booze4days" # input('Enter Password: ')
+		conn= pymysql.connect(host=host,user=user,password=pw,db=db,charset='utf8mb4',autocommit=True,cursorclass=pymysql.cursors.DictCursor)
+		a=conn.cursor()
+		a.execute("SELECT name,id,volume FROM  `Items` WHERE Items.image='False';")
+		result = a.fetchall()
+		for row in result:
+			print(row['name'])
+			self.search(row['name']+" "+str(row['volume']),str(row['id']))
+		print("Completed")
 	def get_soup(self,url,header):
 		return BeautifulSoup(urllib.request.urlopen(urllib.request.Request(url,headers=header)),'html.parser')
 
@@ -93,4 +90,5 @@ class Image:
 			except Exception as e:
 				print ("could not load : "+img)
 				print (e)
-		
+i=Image(sys.argv[1])
+i.findImageless()
