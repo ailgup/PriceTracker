@@ -95,16 +95,16 @@ If the user is logged in as an admin they will see the admin button on their use
     * Viewing of the best deals, using an advanced algorithm which using knowledge of price history determines if the current price is a great deal or just par for the course.
 6. Modularization (Procedures, functions, triggers)
   * Triggers are used extensively to handle the input of data into the database triggers used in the 
-    *```CurrentPrices``` table calculate the price_per_liter, price_per_abv, the_min (the sale price if on sale, otherwise the list price), perc_diff (percent difference from last month), and avg_dif_perc (the percent difference from the average price)
-    *```Prices``` table to calculate the_min (the sale price if on sale, otherwise the list price), which is crucial for graphing
-	*```Items``` table to ensure that if a new Item is created it's associated CurrentPrice is updated with the price_per_liter and price_per_abv
-  *Functions are also used in many of these calculations to make it easier on the frontend for these repeated tasks such as 
-    *```actualVol```- given a Item id and which contains a string based volume eg. (750mL or 1.75L or 750mL 2 Pk) but it needs to be in Liters for the price_per_volume calculation, this function uses regex to extract the actual volume	
-	*```avgPrice```- given an Item id return the average price of the item over time
-	*```getName```- given an Item id return the name of the item
-	*```pricePerABV``` - given an Item id return the price per liter of pure alcohol eg.((current price)/(item volume))*(200/proof)
-	*```pricePercDiff``` - given an Item id return the percent difference from the previous price to the current price eg. (current-past)/current*100
-	*```pricePerLiter``` - given an Item id return the unit price in $/L of a given item
+    * ```CurrentPrices``` table calculate the price_per_liter, price_per_abv, the_min (the sale price if on sale, otherwise the list price), perc_diff (percent difference from last month), and avg_dif_perc (the percent difference from the average price)
+    * ```Prices``` table to calculate the_min (the sale price if on sale, otherwise the list price), which is crucial for graphing
+	* ```Items``` table to ensure that if a new Item is created it's associated CurrentPrice is updated with the price_per_liter and price_per_abv
+  * Functions are also used in many of these calculations to make it easier on the frontend for these repeated tasks such as 
+    * ```actualVol```- given a Item id and which contains a string based volume eg. (750mL or 1.75L or 750mL 2 Pk) but it needs to be in Liters for the price_per_volume calculation, this function uses regex to extract the actual volume	
+	* ```avgPrice```- given an Item id return the average price of the item over time
+	* ```getName```- given an Item id return the name of the item
+	* ```pricePerABV``` - given an Item id return the price per liter of pure alcohol eg.((current price)/(item volume))*(200/proof)
+	* ```pricePercDiff``` - given an Item id return the percent difference from the previous price to the current price eg. (current-past)/current*100
+	* ```pricePerLiter``` - given an Item id return the unit price in $/L of a given item
 7. Error Handling```
   * As this is a web app errors need to be considered, therefore all database connections contain catch's if the database is unavailable
   * Also on the forefront of concern was the possibility of a SQL injection attack, therefore all inputs were scrubbed before being entered into the queries. Particularly dangerous queries such as deletes and creates are only available behind the secure admin page, therefore restricting access to these sensitive commands.
