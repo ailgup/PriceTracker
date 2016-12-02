@@ -1,5 +1,5 @@
 # PriceTracker 
-## [Live Demo](http://chrispuglia.com/pt) - [Feature Video :tv:](https://www.youtube.com/watch?v=Qm6j2n7zL1s)
+[Live Demo](http://chrispuglia.com/pt) - [Feature Video :tv:](https://www.youtube.com/watch?v=Qm6j2n7zL1s)
 
 <table><tr>
 <td width="200">
