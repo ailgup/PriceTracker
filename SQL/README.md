@@ -10,32 +10,6 @@
   6. loginAttempts - tracks the number of unsuccessful login attempts from a user to prevent a brute force attack
 2. Primary and Foreign Keys
   * Items - Primary key (id), cannot make Prices.id a foreign key because it is not the primary key of the table
-  * Prices - Primary key (price_id), cannot make Items.id a foreign key because there exist Prices that do not yet have Items created for them, hense the 'Prices without Items' section of the admin page
-  * CurrentPrices - Primary key (price_id), same as Prices in regard to foreign keys
-  * members - Primary key (id), no foreign keys
-  * Tracking - Primary key (track_id), FOREIGN KEY (`user_id`) REFERENCES `members` (`username`), FOREIGN KEY (`item_id`) REFERENCES `Items` (`id`)
-  * loginAttempts - Primary key (ID), cannot have foreign key of members.username because login attempts can be made by "fake" usernames and we don't want attackers to know the username is fake so the same max attempt policy is used
-3. Integrety and Additional Constraints
-  * Integrity - All foreign keys have integrity constraints built in
-    * `members` (`username`) ON DELETE CASCADE ON UPDATE CASCADE, since if a member is deleted they should be dropped from tracking
-    * `Items` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION, if an Item is deleted (no longer sold) we want to alert the user with a warning, not just delete the Item from their Tracking list, therefore it is kept.
-  * Additional Constraints
-    * Items
-      `id`: NOT NULL,
-      `name`: NOT NULL,
-      `volume`: NOT NULL,
-# MySQL File Details
-
-## Grading Criteria
-1. Tables
-  1. Items - Products to be displayed
-  2. Prices - Legacy price data
-  3. CurrentPrices - Current price data, includes advanced calculated values
-  4. members - users of the application, and their attributes
-  5. Tracking - associates a user with an Item that they are tracking
-  6. loginAttempts - tracks the number of unsuccessful login attempts from a user to prevent a brute force attack
-2. Primary and Foreign Keys
-  * Items - Primary key (id), cannot make Prices.id a foreign key because it is not the primary key of the table
   * Prices - Primary key (price_id), cannot make Items.id a foreign key because there exist Prices that do not yet have Items created for them, hence the 'Prices without Items' section of the admin page
   * CurrentPrices - Primary key (price_id), same as Prices in regard to foreign keys
   * members - Primary key (id), no foreign keys
