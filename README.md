@@ -7,6 +7,7 @@
 </td><td>
 Product price tracker, built as a framework, but implemented to track historical prices from <a href="http://LiquorandWineOutlets.com">LiquorandWineOutlets.com</a>. Frontend is a PHP based web-app, and data is stored in a MySQL database. Legacy data was scraped from PDF's using python, and current pricing data scraped from the web using PHP.
 </td></table>
+
 ## Frontend
 PHP based frontend currently hosted [HERE](http://chrispuglia.com/pt)
 
