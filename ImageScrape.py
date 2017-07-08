@@ -7,6 +7,7 @@ import json
 import sys
 import pymysql
 import pymysql.cursors
+import sys
 class Image:
 	def isInt(self,s):
 		try: 
@@ -28,7 +29,7 @@ class Image:
 		result = a.fetchall()
 		for row in result:
 			print(row['name'])
-			self.search(row['name']+" "+str(row['volume']),str(row['id']))
+			self.search(row['name'].replace("&","%26")+" "+str(row['volume']),str(row['id']))
 		print("Completed")
 	def get_soup(self,url,header):
 		return BeautifulSoup(urllib.request.urlopen(urllib.request.Request(url,headers=header)),'html.parser')
@@ -90,5 +91,18 @@ class Image:
 			except Exception as e:
 				print ("could not load : "+img)
 				print (e)
+	def convertToJpg(self):
+		from PIL import Image
+
+		for infile in os.listdir(self.dir):
+			f, e = os.path.splitext(infile)
+			outfile = f + ".jpg"
+			if infile != outfile:
+				try:
+					Image.open(self.dir+"\\"+infile).save(self.dir+"\\"+outfile)
+					os.remove(self.dir+"\\"+infile)
+				except IOError:
+					print("cannot convert", infile)
 i=Image(sys.argv[1])
-i.findImageless()
+#i.findImageless()
+i.convertToJpg()
