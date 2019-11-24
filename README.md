@@ -8,10 +8,10 @@
 Product price tracker, built as a framework, but implemented to track historical prices from <a href="http://LiquorandWineOutlets.com">LiquorandWineOutlets.com</a>. Frontend is a PHP based web-app, and data is stored in a MySQL database. Legacy data was scraped from PDF's using python, and current pricing data scraped from the web using PHP.
 </td></table>
 
-##Frontend
+## Frontend
 PHP based frontend currently hosted [HERE](http://chrispuglia.com/pt)
 
-###To Deploy
+### To Deploy
 On a LAMP server running PHP 5.5+ run 
 ```
 git clone https://github.com/ailgup/PriceTracker.git
@@ -34,44 +34,44 @@ Now navigating to ```frontend/grid.php``` will display the frontpage, if it is d
 ```
 echo  "<?php header( 'Location: grid.php' ) ;?> " >> index.php
 ```
-###Pages
+### Pages
 
-####Grid
+#### Grid
 <table>
 <tr><td width="200">
 <img src="https://github.com/ailgup/PriceTracker/blob/master/readme/grid.png?raw=true" width="200"></td><td>
 Main page of the site, features items visually with images, allows for search, and ordering based on many criteria.
 Is not exhaustive in filtering as the table does a much better job in this area. Provides basic info about the product and offers an option to mouse over to preview the graph. Clicking on an item will take you to it's page. Features pagination with a default of 60 products per page.</td></tr></table>
 
-####Table
+#### Table
 <table>
 <tr><td width="200"><img src="https://github.com/ailgup/PriceTracker/blob/master/readme/table.png?raw=true" width="200"></td><td>
 Data-centric hub of the site, does not feature all the graphical elements present in the grid, but makes up for it with very powerful sorting and searching tools, in addition to the display of a number of more advanced fields such as Price Per Liter, and Price Per ABV*L. Allowing the user to sort by these gives a much more powerful experience than the grid.</td></tr></table>
 
-####Deals
+#### Deals
 <table>
 <tr><td width="200"><img src="https://github.com/ailgup/PriceTracker/blob/master/readme/deals.png?raw=true" width="200"></td><td>
 Since prices are tracked historically the natural question arises, what are the best deals this month. To handle this the deals page uses an algorithm to rank products given how much the price has fallen from its maximum value while also seeing how much it has changed in the past month. Items at the top of the list will have often fallen 30+% in the past month and will often be at all-time lows, a great time to buy. You can also go to the other end of the spectrum and see the 'worst' deals, items that would not be recommended to purchase this month as the price is at a high point. The layout of the page is very similar to the Grid page.</td></tr></table>
 
-####Product
+#### Product
 <table>
 <tr><td width="200"><img src="https://github.com/ailgup/PriceTracker/blob/master/readme/product.png?raw=true" width="200"></td><td>
 This page gives all the details about a given product in a succinct manner. On the right side of the page the items details are listed along with an image of the product. If the user is logged in the quantity of that product available at the given location is also listed. Important data like the price change in the last month, and the price relative to the average are also listed for easy comparison. On the left side of the page the price history graph takes up the majority of the page. With related products listed below for possible consideration.</td></tr></table>
 
-####Account
+#### Account
 <table>
 <tr><td width="200"><img src="https://github.com/ailgup/PriceTracker/blob/master/readme/user.png?raw=true" width="200"></td><td>
 This page allows users to view their "tracked" items, see their availability at their selected store, as well as modify their selected store, or tracked products. This is very beneficial as it serves as a single place for a user to view the products that that they are interested in without the clutter of uninteresting products.
 </td></tr></table>
 
 
-####Admin Account
+#### Admin Account
 <table>
 <tr><td width="200"><img src="https://github.com/ailgup/PriceTracker/blob/master/readme/admin.png?raw=true" width="200"></td><td>
 If the user is logged in as an admin they will see the admin button on their user page. Clicking this button leads to the admin account page where more details concerning the backend of the site, especially items and prices that do not fit nicely into the database. The admin can add Items that have appeared in the most recent scrape but have not yet been added to the Items table. This is done by performing a live PHP-based scrape of the merchants site. 
 </td></tr></table>
 
-###Grading Criteria
+### Grading Criteria
 1. Create
   * New prices are mined using the ```mine.py``` program and then are inserted into the DB using ```csvToSQL.py```
   * Adding to the Tracking table is done by a user clicking the "Track" button and the functionality found in ```track.php```
