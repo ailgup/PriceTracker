@@ -1,5 +1,5 @@
 # PriceTracker 
-## [Live Demo](http://chrispuglia.com/pt) - [Feature Video :tv:](https://drive.google.com/open?id=0B9vmQhHaABYiSUxUbDJIVmF6eFU)
+## [Live Demo](https://nh-price-tracker.herokuapp.com/) - [Feature Video :tv:](https://drive.google.com/open?id=0B9vmQhHaABYiSUxUbDJIVmF6eFU)
 
 <table><tr>
 <td width="200">
@@ -9,7 +9,7 @@ Product price tracker, built as a framework, but implemented to track historical
 </td></table>
 
 ## Frontend
-PHP based frontend currently hosted [HERE](http://chrispuglia.com/pt)
+PHP based frontend currently hosted [HERE](https://nh-price-tracker.herokuapp.com/)
 
 ### To Deploy
 On a LAMP server running PHP 5.5+ run 
