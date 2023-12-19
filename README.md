@@ -1,5 +1,4 @@
 # PriceTracker 
-## [Live Demo](https://nh-price-tracker.herokuapp.com/) - [Feature Video :tv:](https://drive.google.com/open?id=0B9vmQhHaABYiSUxUbDJIVmF6eFU)
 
 <table><tr>
 <td width="200">
@@ -8,8 +7,6 @@
 Product price tracker, built as a framework, but implemented to track historical prices from <a href="http://LiquorandWineOutlets.com">LiquorandWineOutlets.com</a>. Frontend is a PHP based web-app, and data is stored in a MySQL database. Legacy data was scraped from PDF's using python, and current pricing data scraped from the web using PHP.
 </td></table>
 
-## Frontend
-PHP based frontend currently hosted [HERE](https://nh-price-tracker.herokuapp.com/)
 
 ### To Deploy
 On a LAMP server running PHP 5.5+ run 
